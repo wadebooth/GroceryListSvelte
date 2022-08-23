@@ -1,30 +1,36 @@
 <script>
-	export let name;
+    let newGroceryItem = '';
+	
+    let groceryList = [{text: 'Fairlife Milk', status: true},
+                    {text: 'Air Fryer Chicken', status: false},
+                    {text: 'Yogurt', status: false}];
+	
+	function addToList() {
+		groceryList = [...groceryList, {text: newGroceryItem, status: false}];
+		newGroceryItem = '';
+	}
+	
+	function removeFromList(index) {
+		groceryList.splice(index, 1)
+		groceryList = groceryList;
+    }
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
 
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
+<input bind:value={newGroceryItem} type="text" placeholder="new grocery item..">
+<button on:click={addToList}>Add</button>
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
+<br/>
+{#each groceryList as item, index}
+	<input bind:checked={item.status} type="checkbox">
+	<span class:checked={item.status}>{item.text}</span>
+	<span on:click={() => removeFromList(index)}>❌</span>
+	<br/>
+{/each} 
 
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
-</style>
+
+<style> 
+	.checked {
+        text-decoration: line-through;
+    }
+</style> 
